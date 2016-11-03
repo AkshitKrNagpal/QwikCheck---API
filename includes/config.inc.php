@@ -7,4 +7,6 @@ define("DB_NAME","qwikcheck");
 
 define("ROOT","http://localhost/qwikcheck/");
 
+define("ENC_KEY","AKNVSVS");
+
 ?>
