@@ -50,6 +50,36 @@ class RegistrationCertHandler extends DbHandler {
 		return json_encode($response);
 	} 
 
+	function rc_details($RegNo){
+
+		$sql = "select * from vehicledetails where RegNo = '$RegNo'";
+		if($result = $this->conn->query($sql)) {
+
+			if($result->num_rows == 1) {
+
+				$row = $result->fetch_assoc();
+				$message = "found_success";
+				$response['RegistrationNo'] = $RegNo;
+				$response['EngineNo'] = $row['EngineNo'];
+				$response['ChassisNo'] = $row['ChassisNo'];
+				$response['Vehicle'] = $row['Manufacturer'] ." , ".$row['Model']." , ".$row['YearOfManufacturing']." , ".$row['Color']." , ".$row['CC']."CC";
+				
+			}
+			else if($result->num_rows == 0){
+				$message="No such record found under this RegNo";
+			}
+			else{
+				$message="This is something unusual!";
+			}
+		}
+		if(strcmp($message,"found_success")!=0){
+			$response['message'] = $message;
+		}
+
+
+		return json_encode($response);
+
+	}
 	function register_vehicle() {
 
 		//$sql = "INSERT INTO ";
