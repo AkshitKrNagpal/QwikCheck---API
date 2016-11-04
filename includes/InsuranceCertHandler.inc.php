@@ -50,7 +50,48 @@ class InsuranceCertHandler extends DbHandler {
 		return json_encode($response);
 	} 
 
-	function register_vehicle() {
+	function ins_details($RegNo){
+
+		$sql = "select * from insurancedetails where RegNo = '$RegNo'";
+		$message = "";
+		if($result = $this->conn->query($sql)) {
+
+			if($result->num_rows == 1) {
+
+				$row = $result->fetch_assoc();
+				$message = "found_success";
+				$response['InsuranceID'] = $row['InsuranceID'];
+				$response['Validity'] = $row['InsuredUpto'];
+				$response['Insurance Type'] = $row['InsType'];
+				$response['InsuranceOwner'] = $row['InsuredToID'];
+				$response['Coverage'] = $row['Coverage'];
+				$response['Insured from'] = "Company:- ".$row['InsCompanyID']. " , By:- ".$row['InsCheckerID'];
+				
+			}
+
+			else if($result->num_rows == 0){
+				$message="No such record found under this RegNo";
+			}
+			else{
+				$message="This is something unusual!";
+			}
+		}
+
+		else{
+			$response['error']="Query error encountered!!";
+
+		}
+
+		if(strcmp($message,"found_success")!=0){
+			$response['message'] = $message;
+		}
+
+
+		return json_encode($response, JSON_PRETTY_PRINT);
+
+	}
+
+	function register_insurance() {
 
 		//$sql = "INSERT INTO ";
 	}

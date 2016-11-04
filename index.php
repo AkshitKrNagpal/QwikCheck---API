@@ -1,9 +1,9 @@
 <?php
 
-include_once "includes/RegistrationCertHandler.inc.php";
+include_once "includes/InsuranceCertHandler.inc.php";
 
-$handler = new RegistrationCertHandler(); 
+$handler = new InsuranceCertHandler(); 
 
-echo $handler->rc_details("DL13SG5035");
+echo $handler->ins_details("DL13SG5035");
 
 ?>
