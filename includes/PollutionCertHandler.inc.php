@@ -50,7 +50,48 @@ class PollutionCertHandler extends DbHandler {
 		return json_encode($response);
 	} 
 
-	function register_vehicle() {
+	function pucc_details($RegNo){
+
+		$sql = "select * from pollutiondetails where RegNo = '$RegNo'";
+		$message = "";
+		if($result = $this->conn->query($sql)) {
+
+			if($result->num_rows == 1) {
+
+				$row = $result->fetch_assoc();
+				$message = "found_success";
+				$response['PUCC_Number'] = $row['PUCCNo'];
+				$response['Validity'] = $row['ValidUpto'];
+				$response['FuelType'] = $row['FuelType'];
+				$response['EngineStroke'] = $row['EngineStroke'];
+				$response['Checked From'] = "Center:- ".$row['CentreCode']." , By:- ".$row['pCheckerID'];
+				
+			}
+
+			else if($result->num_rows == 0){
+				$message="No such record found under this RegNo";
+			}
+			else{
+				$message="This is something unusual!";
+			}
+		}
+
+		else{
+			$response['error']="Query error encountered!!";
+
+		}
+
+		if(strcmp($message,"found_success")!=0){
+			$response['message'] = $message;
+		}
+
+
+		return json_encode($response, JSON_PRETTY_PRINT);
+
+	}
+
+
+	function register_pollution() {
 
 		//$sql = "INSERT INTO ";
 	}
