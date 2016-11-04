@@ -1,9 +1,9 @@
 <?php
 
-include_once "includes/InsuranceCertHandler.inc.php";
+include_once "includes/PollutionCertHandler.inc.php";
 
-$handler = new InsuranceCertHandler(); 
+$handler = new PollutionCertHandler(); 
 
-echo $handler->ins_details("DL13SG5035");
+echo $handler->pucc_details("DL13SG5035");
 
 ?>
