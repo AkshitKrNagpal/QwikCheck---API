@@ -53,6 +53,7 @@ class RegistrationCertHandler extends DbHandler {
 	function rc_details($RegNo){
 
 		$sql = "select * from vehicledetails where RegNo = '$RegNo'";
+		$message = "";
 		if($result = $this->conn->query($sql)) {
 
 			if($result->num_rows == 1) {
@@ -60,11 +61,15 @@ class RegistrationCertHandler extends DbHandler {
 				$row = $result->fetch_assoc();
 				$message = "found_success";
 				$response['RegistrationNo'] = $RegNo;
+				$response['Owner'] = $row['OwnerName'] . " :- " .$row['OwnerID'];
 				$response['EngineNo'] = $row['EngineNo'];
 				$response['ChassisNo'] = $row['ChassisNo'];
-				$response['Vehicle'] = $row['Manufacturer'] ." , ".$row['Model']." , ".$row['YearOfManufacturing']." , ".$row['Color']." , ".$row['CC']."CC";
-				
+				$response['Vehicle'] = $row['Manufacturer'] ." , ".$row['Model']." , ".$row['YearOfManufacturing']." , ".
+										$row['Color']." , ".$row['CC']."CC , ".$row['NoOfCyl']." cyl";
+				$response['UsageCategory'] = $row['UsageCategory']." , ".$row['BodyType']." , ".$row['WeightCategory']."kg";
+				$response['Fuel'] = $row['FuelType'] . " , ". $row['FuelCapacity']." litre ";
 			}
+
 			else if($result->num_rows == 0){
 				$message="No such record found under this RegNo";
 			}
@@ -72,14 +77,22 @@ class RegistrationCertHandler extends DbHandler {
 				$message="This is something unusual!";
 			}
 		}
+
+		else{
+			$response['error']="Query error encountered!!";
+
+		}
+
 		if(strcmp($message,"found_success")!=0){
 			$response['message'] = $message;
 		}
 
 
-		return json_encode($response);
+		return json_encode($response, JSON_PRETTY_PRINT);
 
 	}
+
+
 	function register_vehicle() {
 
 		//$sql = "INSERT INTO ";
