@@ -1,8 +1,8 @@
 <?php
 
-include_once "includes/RegistrationCertHandler.inc.php";
+include_once "includes/PollutionCertHandler.inc.php";
 
-$handler = new RegistrationCertHandler(); 
+$handler = new PollutionCertHandler(); 
 
 echo $handler->check_status("DL13SG5035");
 
