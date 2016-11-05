@@ -93,9 +93,18 @@ class RegistrationCertHandler extends DbHandler {
 	}
 
 
-	function register_vehicle() {
 
-		//$sql = "INSERT INTO ";
+
+	function register_vehicle($RegNo,$EngineNo,$ChassisNo,$Manufacturer,$Model,$YearOfManufacturing,$RegDate,$RegUpto,$FuelType,$FuelCapacity,$SeatingCapacity,$VehicleCategory,$WeightCategory,$UsageCategory,$Color,$NoOfCyl,$CC,$BodyType,$OwnerName,$OwnerID) {
+
+		$sql="Insert into vehicledetails values ('{$RegNo}','{$EngineNo}','{$ChassisNo}','{$Manufacturer}','{$Model}','{$YearOfManufacturing}','{$RegDate}','{$RegUpto}','{$FuelType}',{$FuelCapacity},{$SeatingCapacity},'{$VehicleCategory}','{$WeightCategory}','{$UsageCategory}','{$Color}',{$NoOfCyl},{$CC},'{$BodyType}','{$OwnerName}','{$OwnerID}');";
+
+		if ($res = $this->conn->query($sql)){
+			echo "Record Addition success";
+		}
+
+
+		
 	}
 }
 
