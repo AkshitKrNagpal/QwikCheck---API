@@ -91,10 +91,18 @@ class InsuranceCertHandler extends DbHandler {
 
 	}
 
-	function register_insurance() {
+	function register_insCert($RegNo, $InsType, $InsCompanyID,$InsCheckerID, $InsuredOn, $InsuredUpto, $Valuation, $Coverage, $InsuredToID, $InsCost, $LastInsID) {
 
-		//$sql = "INSERT INTO ";
-	}
+		$sql="Insert into insurancedetails (RegNo, InsType, InsCompanyID,InsCheckerID, InsuredOn, InsuredUpto, Valuation, Coverage, InsuredToID, InsCost, LastInsID) values ('{$RegNo}','{$InsType}','{$InsCompanyID}','{$InsCheckerID}','{$InsuredOn}','{$InsuredUpto}',{$Valuation},	'{$Coverage}','{$InsuredToID}',{$InsCost},{$LastInsID});";
+
+		if ($res = $this->conn->query($sql)){
+			echo "PUCC Record Addition success";
+		}
+		else{
+			echo "There is some error, Recheck the details and try again";
+		}
+
+	} 	
 }
 
 ?>

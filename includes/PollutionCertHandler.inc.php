@@ -91,9 +91,17 @@ class PollutionCertHandler extends DbHandler {
 	}
 
 
-	function register_pollution() {
+	function register_pucc($RegNo, $EngineStroke, $FuelType,$CheckedOn, $ValidUpto, $CentreCode, $pCheckerID, $CostPUCC, $LastPUCCNo) {
 
-		//$sql = "INSERT INTO ";
+		$sql="Insert into pollutiondetails (RegNo, EngineStroke, FuelType,CheckedOn, ValidUpto, CentreCode, pCheckerID, CostPUCC, LastPUCCNo) values ('{$RegNo}','{$EngineStroke}','{$FuelType}','{$CheckedOn}','{$ValidUpto}','{$CentreCode}','{$pCheckerID}',{$CostPUCC},{$LastPUCCNo});";
+
+		if ($res = $this->conn->query($sql)){
+			echo "PUCC Record Addition success";
+		}
+		else{
+			echo "There is some error, Recheck the details and try again";
+		}
+
 	}
 }
 
