@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Nov 04, 2016 at 08:50 AM
--- Server version: 10.1.16-MariaDB
--- PHP Version: 5.6.24
+-- Host: 127.0.0.1
+-- Generation Time: Nov 05, 2016 at 09:24 AM
+-- Server version: 10.1.13-MariaDB
+-- PHP Version: 5.6.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `insurancedetails` (
-  `InsuranceID` varchar(255) NOT NULL,
+  `InsuranceID` int(255) NOT NULL,
   `RegNo` varchar(255) NOT NULL,
   `InsType` varchar(255) NOT NULL,
   `InsCompanyID` varchar(255) NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE `insurancedetails` (
   `Coverage` varchar(255) NOT NULL,
   `InsuredToID` varchar(255) NOT NULL,
   `InsCost` int(11) NOT NULL,
-  `LastInsID` varchar(255) NOT NULL
+  `LastInsID` int(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Vehicle Insurance Details (updated frequently)';
 
 --
@@ -46,7 +46,8 @@ CREATE TABLE `insurancedetails` (
 --
 
 INSERT INTO `insurancedetails` (`InsuranceID`, `RegNo`, `InsType`, `InsCompanyID`, `InsCheckerID`, `InsuredOn`, `InsuredUpto`, `Valuation`, `Coverage`, `InsuredToID`, `InsCost`, `LastInsID`) VALUES
-('IN001', 'DL13SG5035', 'First', '100', '100', '2016-08-20', '2017-03-21', 100000, 'Accidental', '001', 2000, 'IN000');
+(1, 'DL13SG5035', 'First', '100', '100', '2016-08-20', '2017-03-21', 100000, 'Accidental', '001', 2000, 0),
+(2, 'UP15H1517', 'THIRD', '101', '010', '2010-11-11', '2020-12-12', 10101010, 'ACCIDENTAL PERSONAL', '2', 2020, 1);
 
 -- --------------------------------------------------------
 
@@ -55,7 +56,7 @@ INSERT INTO `insurancedetails` (`InsuranceID`, `RegNo`, `InsType`, `InsCompanyID
 --
 
 CREATE TABLE `pollutiondetails` (
-  `PUCCNo` varchar(255) NOT NULL,
+  `PUCCNo` int(255) NOT NULL,
   `RegNo` varchar(255) NOT NULL,
   `EngineStroke` varchar(255) NOT NULL,
   `FuelType` varchar(255) NOT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE `pollutiondetails` (
   `CentreCode` varchar(255) NOT NULL,
   `pCheckerID` varchar(255) NOT NULL,
   `CostPUCC` int(11) NOT NULL,
-  `LastPUCCNo` varchar(255) NOT NULL
+  `LastPUCCNo` int(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Pollution Certificate Details (Updated frequently)';
 
 --
@@ -72,7 +73,9 @@ CREATE TABLE `pollutiondetails` (
 --
 
 INSERT INTO `pollutiondetails` (`PUCCNo`, `RegNo`, `EngineStroke`, `FuelType`, `CheckedOn`, `ValidUpto`, `CentreCode`, `pCheckerID`, `CostPUCC`, `LastPUCCNo`) VALUES
-('PUCC001', 'DL13SG5035', '4', 'Petrol', '2016-10-14', '2017-01-01', 'CENTRE001', 'Checker001', 70, 'PUCC000');
+(1, 'DL13SG5035', '4', 'Petrol', '2016-10-14', '2017-01-01', 'CENTRE001', 'Checker001', 70, 0),
+(2, 'MH12ES1212', '4', 'LPG', '2016-11-02', '2016-11-30', 'CENTRE002', 'Checker003', 700, 0),
+(3, 'UP15H1517', '8', 'CNG', '2016-09-09', '2016-12-12', 'CENTRE001', 'Checker002', 200, 1);
 
 -- --------------------------------------------------------
 
@@ -150,7 +153,8 @@ CREATE TABLE `vehicledetails` (
 --
 
 INSERT INTO `vehicledetails` (`RegNo`, `EngineNo`, `ChassisNo`, `Manufacturer`, `Model`, `YearOfManufacturing`, `RegDate`, `RegUpto`, `FuelType`, `FuelCapacity`, `SeatingCapacity`, `VehicleCategory`, `WeightCategory`, `UsageCategory`, `Color`, `NoOfCyl`, `CC`, `BodyType`, `OwnerName`, `OwnerID`) VALUES
-('DL13SG5035', '1234567890', '0987654321', 'HERO HONDA', 'SPLENDOR-NXG', 2009, '2009-10-10', '2038-10-09', 'Petrol', 10, 4, 'M.CYL', '500', 'PRSNL', 'Black', 1, 99, 'mine', 'Vishesh', '001');
+('DL13SG5035', '1234567890', '0987654321', 'HERO HONDA', 'SPLENDOR-NXG', 2009, '2009-10-10', '2038-10-09', 'Petrol', 10, 4, 'M.CYL', '500', 'PRSNL', 'Black', 1, 99, 'mine', 'Vishesh', '001'),
+('UP15H1517', '12121212', '34343434', 'SUZUKI', 'WAGON R', 2000, '2000-09-09', '2018-09-10', 'CNG', 100, 8, 'LMV', '1010', 'COM', 'TRANSPARENT', 100, 2000, 'COOL', 'MEEE', '002');
 
 --
 -- Indexes for dumped tables
@@ -192,6 +196,16 @@ ALTER TABLE `vehicledetails`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `insurancedetails`
+--
+ALTER TABLE `insurancedetails`
+  MODIFY `InsuranceID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `pollutiondetails`
+--
+ALTER TABLE `pollutiondetails`
+  MODIFY `PUCCNo` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `session_api`
 --
