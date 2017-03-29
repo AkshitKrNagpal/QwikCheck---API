@@ -12,7 +12,7 @@ class InsuranceCertHandler extends DbHandler {
 		$ok = false;
 		$message = "";
 		
-		$sql = "SELECT DATEDIFF(CURDATE(),InsuredUpto) as expiredDaysAgo FROM Insurancedetails WHERE RegNo = '$RegNo'";
+		$sql = "SELECT DATEDIFF(CURDATE(),InsuredUpto) as expiredDaysAgo FROM insurancedetails WHERE RegNo = '$RegNo'";
 
 		if( $result = $this->conn->query($sql) ) {
 			
@@ -52,40 +52,33 @@ class InsuranceCertHandler extends DbHandler {
 
 	function ins_details($RegNo){
 
-		$sql = "select * from insurancedetails where RegNo = '$RegNo'";
-		$message = "";
-		if($result = $this->conn->query($sql)) {
+		$success = false;
+		$error = "";
+
+		$sql = "SELECT * from insurancedetails WHERE RegNo = '$RegNo'";
+
+		if( $result = $this->conn->query($sql) ) {
 
 			if($result->num_rows == 1) {
-
-				$row = $result->fetch_assoc();
-				$message = "found_success";
-				$response['InsuranceID'] = $row['InsuranceID'];
-				$response['Validity'] = $row['InsuredUpto'];
-				$response['Insurance Type'] = $row['InsType'];
-				$response['InsuranceOwner'] = $row['InsuredToID'];
-				$response['Coverage'] = $row['Coverage'];
-				$response['Insured from'] = "Company:- ".$row['InsCompanyID']. " , By:- ".$row['InsCheckerID'];
 				
+				$success = true;
+				$details =  $result->fetch_assoc();
+
+			} else if ($result->num_rows == 0) {
+				$error = "No Insurance Certificate was found.";
+			} else {
+				$error = "Something went wrong. It should not happen.";
 			}
 
-			else if($result->num_rows == 0){
-				$message="No such record found under this RegNo";
-			}
-			else{
-				$message="This is something unusual!";
-			}
+		} else {
+			$error = "Sql query is incorrect";
 		}
 
-		else{
-			$response['error']="Query error encountered!!";
-
+		if( $response['success'] = $success ) {
+			$response['details'] = $details;
+		} else {
+			$response['error'] = $error; 
 		}
-
-		if(strcmp($message,"found_success")!=0){
-			$response['message'] = $message;
-		}
-
 
 		return json_encode($response, JSON_PRETTY_PRINT);
 
@@ -93,14 +86,25 @@ class InsuranceCertHandler extends DbHandler {
 
 	function register_insCert($RegNo, $InsType, $InsCompanyID,$InsCheckerID, $InsuredOn, $InsuredUpto, $Valuation, $Coverage, $InsuredToID, $InsCost, $LastInsID) {
 
-		$sql="Insert into insurancedetails (RegNo, InsType, InsCompanyID,InsCheckerID, InsuredOn, InsuredUpto, Valuation, Coverage, InsuredToID, InsCost, LastInsID) values ('{$RegNo}','{$InsType}','{$InsCompanyID}','{$InsCheckerID}','{$InsuredOn}','{$InsuredUpto}',{$Valuation},	'{$Coverage}','{$InsuredToID}',{$InsCost},{$LastInsID});";
+		$success = false;
+		$error = "";
 
-		if ($res = $this->conn->query($sql)){
-			echo "PUCC Record Addition success";
+		$sql="Insert into insurancedetails (RegNo, InsType, InsCompanyID,InsCheckerID, InsuredOn, InsuredUpto, Valuation, Coverage, InsuredToID, InsCost, LastInsID) values ('$RegNo','$InsType','$InsCompanyID','$InsCheckerID','$InsuredOn','$InsuredUpto','$Valuation','$Coverage','$InsuredToID',$InsCost,$LastInsID)";
+
+		if ($result = $this->conn->query($sql)){
+			$success = true;
+			$message = "Insurance record registered";
+		} else {
+			$error = "The sql query was not valid.";
 		}
-		else{
-			echo "There is some error, Recheck the details and try again";
+
+		if( $response['success'] = $success ) {
+			$response['message'] = $message;
+		} else {
+			$response['error'] = $error;
 		}
+
+		return json_encode($response, JSON_PRETTY_PRINT);
 
 	} 	
 }

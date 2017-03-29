@@ -52,59 +52,81 @@ class RegistrationCertHandler extends DbHandler {
 
 	function rc_details($RegNo){
 
+		$success = false;
+		$error = "";
+
 		$sql = "select * from vehicledetails where RegNo = '$RegNo'";
-		$message = "";
-		if($result = $this->conn->query($sql)) {
+		
+		if( $result = $this->conn->query($sql) ) {
 
 			if($result->num_rows == 1) {
+				
+				$success = true;
+				$details =  $result->fetch_assoc();
 
-				$row = $result->fetch_assoc();
-				$message = "found_success";
-				$response['RegistrationNo'] = $RegNo;
-				$response['Owner'] = $row['OwnerName'] . " :- " .$row['OwnerID'];
-				$response['EngineNo'] = $row['EngineNo'];
-				$response['ChassisNo'] = $row['ChassisNo'];
-				$response['Vehicle'] = $row['Manufacturer'] ." , ".$row['Model']." , ".$row['YearOfManufacturing']." , ".
-										$row['Color']." , ".$row['CC']."CC , ".$row['NoOfCyl']." cyl";
-				$response['UsageCategory'] = $row['UsageCategory']." , ".$row['BodyType']." , ".$row['WeightCategory']."kg";
-				$response['Fuel'] = $row['FuelType'] . " , ". $row['FuelCapacity']." litre ";
+			} else if ($result->num_rows == 0) {
+				$error = "No Registration Certificate was found.";
+			} else {
+				$error = "Something went wrong. It should not happen.";
 			}
 
-			else if($result->num_rows == 0){
-				$message="No such record found under this RegNo";
-			}
-			else{
-				$message="This is something unusual!";
-			}
+		} else {
+			$error = "Sql query is incorrect";
 		}
 
-		else{
-			$response['error']="Query error encountered!!";
-
+		if( $response['success'] = $success ) {
+			$response['details'] = $details;
+		} else {
+			$response['error'] = $error; 
 		}
-
-		if(strcmp($message,"found_success")!=0){
-			$response['message'] = $message;
-		}
-
 
 		return json_encode($response, JSON_PRETTY_PRINT);
 
 	}
 
 
+	function register_vehicle(
+		$RegNo,
+		$EngineNo,
+		$ChassisNo,
+		$Manufacturer,
+		$Model,
+		$YearOfManufacturing,
+		$RegDate,
+		$RegUpto,
+		$FuelType,
+		$FuelCapacity,
+		$SeatingCapacity,
+		$VehicleCategory,
+		$WeightCategory,
+		$UsageCategory,
+		$Color,
+		$NoOfCyl,
+		$CC,
+		$BodyType,
+		$OwnerName,
+		$OwnerID
+		) {
 
+		$success = false;
+		$error = "";
 
-	function register_vehicle($RegNo,$EngineNo,$ChassisNo,$Manufacturer,$Model,$YearOfManufacturing,$RegDate,$RegUpto,$FuelType,$FuelCapacity,$SeatingCapacity,$VehicleCategory,$WeightCategory,$UsageCategory,$Color,$NoOfCyl,$CC,$BodyType,$OwnerName,$OwnerID) {
+		$sql="Insert into vehicledetails values ('$RegNo','$EngineNo','$ChassisNo','$Manufacturer','$Model','$YearOfManufacturing','$RegDate','$RegUpto','$FuelType',$FuelCapacity,$SeatingCapacity,'$VehicleCategory','$WeightCategory','$UsageCategory','$Color',$NoOfCyl,$CC,'$BodyType','$OwnerName','$OwnerID');";
 
-		$sql="Insert into vehicledetails values ('{$RegNo}','{$EngineNo}','{$ChassisNo}','{$Manufacturer}','{$Model}','{$YearOfManufacturing}','{$RegDate}','{$RegUpto}','{$FuelType}',{$FuelCapacity},{$SeatingCapacity},'{$VehicleCategory}','{$WeightCategory}','{$UsageCategory}','{$Color}',{$NoOfCyl},{$CC},'{$BodyType}','{$OwnerName}','{$OwnerID}');";
-
-		if ($res = $this->conn->query($sql)){
-			echo "Vehicle RC Record Addition success";
+		if ($result = $this->conn->query($sql)){
+			$success = true;
+			$message = "Vehicle record registered";
+		} else {
+			$error = "The sql query was not valid.";
 		}
-		else{
-			echo "There is some error, Recheck the details and try again";
+
+		if( $response['success'] = $success ) {
+			$response['message'] = $message;
+		} else {
+			$response['error'] = $error;
 		}
+
+		return json_encode($response, JSON_PRETTY_PRINT);
 
 
 		

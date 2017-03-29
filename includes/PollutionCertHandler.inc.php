@@ -52,39 +52,34 @@ class PollutionCertHandler extends DbHandler {
 
 	function pucc_details($RegNo){
 
-		$sql = "select * from pollutiondetails where RegNo = '$RegNo'";
-		$message = "";
-		if($result = $this->conn->query($sql)) {
+		$success = false;
+		$error = "";
+		
+		$sql = "SELECT * from pollutiondetails where RegNo = '$RegNo'";
+		
+
+		if( $result = $this->conn->query($sql) ) {
 
 			if($result->num_rows == 1) {
-
-				$row = $result->fetch_assoc();
-				$message = "found_success";
-				$response['PUCC_Number'] = $row['PUCCNo'];
-				$response['Validity'] = $row['ValidUpto'];
-				$response['FuelType'] = $row['FuelType'];
-				$response['EngineStroke'] = $row['EngineStroke'];
-				$response['Checked From'] = "Center:- ".$row['CentreCode']." , By:- ".$row['pCheckerID'];
 				
+				$success = true;
+				$details =  $result->fetch_assoc();
+
+			} else if ($result->num_rows == 0) {
+				$error = "No Pollution Certificate was found.";
+			} else {
+				$error = "Something went wrong. It should not happen.";
 			}
 
-			else if($result->num_rows == 0){
-				$message="No such record found under this RegNo";
-			}
-			else{
-				$message="This is something unusual!";
-			}
+		} else {
+			$error = "Sql query is incorrect";
 		}
 
-		else{
-			$response['error']="Query error encountered!!";
-
+		if( $response['success'] = $success ) {
+			$response['details'] = $details;
+		} else {
+			$response['error'] = $error; 
 		}
-
-		if(strcmp($message,"found_success")!=0){
-			$response['message'] = $message;
-		}
-
 
 		return json_encode($response, JSON_PRETTY_PRINT);
 
@@ -93,15 +88,25 @@ class PollutionCertHandler extends DbHandler {
 
 	function register_pucc($RegNo, $EngineStroke, $FuelType,$CheckedOn, $ValidUpto, $CentreCode, $pCheckerID, $CostPUCC, $LastPUCCNo) {
 
-		$sql="Insert into pollutiondetails (RegNo, EngineStroke, FuelType,CheckedOn, ValidUpto, CentreCode, pCheckerID, CostPUCC, LastPUCCNo) values ('{$RegNo}','{$EngineStroke}','{$FuelType}','{$CheckedOn}','{$ValidUpto}','{$CentreCode}','{$pCheckerID}',{$CostPUCC},{$LastPUCCNo});";
+		$success = false;
+		$error = "";
 
-		if ($res = $this->conn->query($sql)){
-			echo "PUCC Record Addition success";
-		}
-		else{
-			echo "There is some error, Recheck the details and try again";
+		$sql="Insert into pollutiondetails (RegNo, EngineStroke, FuelType,CheckedOn, ValidUpto, CentreCode, pCheckerID, CostPUCC, LastPUCCNo) values ('$RegNo','$EngineStroke','$FuelType','$CheckedOn','$ValidUpto','$CentreCode','$pCheckerID',$CostPUCC,$LastPUCCNo);";
+
+		if ($result = $this->conn->query($sql)){
+			$success = true;
+			$message = "Pollution record registered";
+		} else {
+			$error = "The sql query was not valid.";
 		}
 
+		if( $response['success'] = $success ) {
+			$response['message'] = $message;
+		} else {
+			$response['error'] = $error;
+		}
+
+		return json_encode($response, JSON_PRETTY_PRINT);
 	}
 }
 

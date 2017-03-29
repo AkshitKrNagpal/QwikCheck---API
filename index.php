@@ -1,61 +1,130 @@
 <?php
 
-/*
-include_once "includes/RegistrationCertHandler.inc.php";
-$handler = new RegistrationCertHandler(); 
-echo $handler->check_status("DL13SG5035");
-*/
+// Check if logged in
+if( isset($_POST['api_key'])) {
+
+	if( isset($_POST['get']) ) {
+
+		if( $_POST['get'] == "my_vehicles" ) {
+
+			include_once 'includes/UserHandler.inc.php';
+			$userHandler = new UserHandler();
+			echo $userHandler->get_vehicles($_POST['api_key']);
+
+		}
+
+	} 
+	if( isset($_POST['register']) ) {
+
+		if( $_POST['register'] == "RC" ) {
+
+			include_once 'includes/RegistrationCertHandler.inc.php';
+			$handler = new RegistrationCertHandler();
+			echo $handler->register_vehicle(
+				$_POST['regno'],
+				$_POST['engineno'],
+				$_POST['chassisno'],
+				$_POST['manufacturer'],
+				$_POST['model'],
+				$_POST['year'],
+				$_POST['regdate'],
+				$_POST['regupto'],
+				$_POST['fueltype'],
+				$_POST['fuelcapacity'],
+				$_POST['seatingcapacity'],
+				$_POST['category'],
+				$_POST['weightcategory'],
+				$_POST['usagecategory'],
+				$_POST['color'],
+				$_POST['noofcyl'],
+				$_POST['cc'],
+				$_POST['bodytype'],
+				$_POST['ownername'],
+				$_POST['ownerid']
+				);
+		} 
+		else if( $_POST['register'] == "INS" ) {
+
+			include_once 'includes/InsuranceCertHandler.inc.php';
+			$handler = new InsuranceCertHandler();
+			echo $handler->register_insCert(
+				$_POST['regno'],
+				$_POST['instype'],
+				$_POST['inscompanyid'],
+				$_POST['inscheckerid'],
+				$_POST['insuredon'],
+				$_POST['insuredupto'],
+				$_POST['valuation'],
+				$_POST['coverage'],
+				$_POST['insuredtoid'],
+				$_POST['inscost'],
+				$_POST['lastinsid']
+				);
+		} 
+		else if( $_POST['register'] == "PUCC" ) {
+
+			include_once 'includes/PollutionCertHandler.inc.php';
+			$handler = new PollutionCertHandler();
+			echo $handler->register_pucc(
+				$_POST['regno'],
+				$_POST['enginestroke'],
+				$_POST['fueltype'],
+				$_POST['checkedon'],
+				$_POST['validupto'],
+				$_POST['centrecode'],
+				$_POST['pcheckerid'],
+				$_POST['costpucc'],
+				$_POST['lastpuccno']
+				);
+		} 
 
 
-/*
-include_once "includes/RegistrationCertHandler.inc.php";
-$handler = new RegistrationCertHandler(); 
-echo $handler->rc_details("DL13SG5035");
-*/
+	} else if( isset($_POST['details']) && isset($_POST['vehicle_number']) ) {
 
+		if( $_POST['details'] == "RC" ) {
 
-/*
-include_once "includes/PollutionCertHandler.inc.php";
-$handler = new PollutionCertHandler(); 
-echo $handler->check_status("DL13SG5035");
-*/
+			include_once 'includes/RegistrationCertHandler.inc.php';
+			echo (new RegistrationCertHandler())->rc_details($_POST['vehicle_number']);
 
+		} else if( $_POST['details'] == "INS" ) {
 
-/*
-include_once "includes/PollutionCertHandler.inc.php";
-$handler = new PollutionCertHandler(); 
-echo $handler->pucc_details("DL13SG5035");
-*/
+			include_once 'includes/InsuranceCertHandler.inc.php';
+			echo (new InsuranceCertHandler())->ins_details($_POST['vehicle_number']);
 
+		} else if( $_POST['details'] == "PUCC" ) {
 
-/*
-include_once "includes/InsuranceCertHandler.inc.php";
-$handler = new InsuranceCertHandler(); 
-echo $handler->check_status("DL13SG5035");
-*/
+			include_once 'includes/PollutionCertHandler.inc.php';
+			echo (new PollutionCertHandler())->pucc_details($_POST['vehicle_number']);
 
+		}
 
-/*
-include_once "includes/InsuranceCertHandler.inc.php";
-$handler = new InsuranceCertHandler(); 
-echo $handler->ins_details("DL13SG5035");
-*/
+	} else if( isset($_POST['vehicle_number']) ) {
 
-/*
-include_once "includes/RegistrationCertHandler.inc.php";
-$handler = new RegistrationCertHandler();
-echo $handler->register_vehicle('UP15H1517','12121212','34343434','SUZUKI','WAGON R','2000','2000-09-09','2018-09-10','CNG',100,8,'LMV','1010','COM','TRANSPARENT',100,2000,'COOL','MEEE','002');
-*/
+		include_once 'includes/RegistrationCertHandler.inc.php';
+		include_once 'includes/InsuranceCertHandler.inc.php';
+		include_once 'includes/PollutionCertHandler.inc.php';
+		
+		$rc_details = trim((new RegistrationCertHandler())->check_status($_POST['vehicle_number']));
+		$ins_details = trim((new InsuranceCertHandler())->check_status($_POST['vehicle_number']));
+		$poll_details = trim((new PollutionCertHandler())->check_status($_POST['vehicle_number']));
 
-/*
-include_once "includes/PollutionCertHandler.inc.php";
-$handler = new PollutionCertHandler();
-echo $handler->register_pucc('UP15H1517','8','CNG','2016-09-09','2016-12-12','CENTRE001','Checker002',200,1);
-*/
+		echo '{ "rc_details" : '.$rc_details.', "ins_details" : '.$ins_details.', "poll_details" : '.$poll_details.'}';
 
-/*
-include_once "includes/InsuranceCertHandler.inc.php";
-$handler = new InsuranceCertHandler();
-echo $handler->register_insCert('UP15H1517','THIRD','101','010','2010-11-11','2020-12-12',10101010,	'ACCIDENTAL PERSONAL','2',2020,1);
-*/
+	} 
+
+} else {
+
+	include_once 'includes/UserHandler.inc.php';
+	$userHandler = new UserHandler();
+
+	// Registration API
+	if( isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['password']) ) {
+		echo $userHandler->create_user($_POST['username'],$_POST['password'],$_POST['fullname']);
+	} 
+	// Login API
+	if( isset($_POST['username']) && isset($_POST['password']) ) {
+		echo $userHandler->check_login($_POST['username'],$_POST['password']);
+	}
+}
+
 ?>
