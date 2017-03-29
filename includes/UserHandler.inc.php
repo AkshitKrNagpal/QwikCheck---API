@@ -7,7 +7,7 @@ class UserHandler extends DbHandler {
 
 	function username_exists($username) {
 
-		$sql = "SELECT count(*) as count FROM users WHERE user_name = '$username'";
+		$sql = "SELECT count(*) as count FROM ".USER_TABLE_NAME." WHERE user_name = '$username'";
 		$result = $this->conn->query($sql);
 		$count = $result->fetch_assoc()['count'];
 
@@ -18,7 +18,7 @@ class UserHandler extends DbHandler {
 
 	function get_user_id($apikey) {
 
-		$sql = "SELECT user_id FROM session_api WHERE api_key = '$apikey'";
+		$sql = "SELECT user_id FROM ".SESSION_TABLE_NAME." WHERE api_key = '$apikey'";
 		
 		if( $result = $this->conn->query($sql) ) {
 			if( $result->num_rows == 1 ) {
@@ -34,18 +34,18 @@ class UserHandler extends DbHandler {
 
 		// Deleting previous session 
 
-		$sql = "DELETE from session_api WHERE user_id = '$user_id'";
+		$sql = "DELETE from ".SESSION_TABLE_NAME." WHERE user_id = '$user_id'";
 		
 		if ( $this->conn->query($sql) ) {
 			
 			// Creating new session
-			$sql = "INSERT INTO session_api (api_key,user_id) VALUES ('','$user_id') ";
+			$sql = "INSERT INTO ".SESSION_TABLE_NAME." (api_key,user_id) VALUES ('','$user_id') ";
 
 			if( $this->conn->query($sql) ) {	
 
-				$api_key = Hasher::encrypt($this->conn->query("SELECT api_id FROM session_api WHERE user_id='$user_id'")->fetch_assoc()['api_id']);
+				$api_key = Hasher::encrypt($this->conn->query("SELECT api_id FROM ".SESSION_TABLE_NAME." WHERE user_id='$user_id'")->fetch_assoc()['api_id']);
 
-				$sql = "UPDATE session_api SET api_key = '$api_key' WHERE user_id='$user_id'";
+				$sql = "UPDATE ".SESSION_TABLE_NAME." SET api_key = '$api_key' WHERE user_id='$user_id'";
 
 				if( $this->conn->query($sql) )
 					return $api_key;
@@ -62,7 +62,7 @@ class UserHandler extends DbHandler {
 
 		$pass_hash = Hasher::encrypt($password);
 
-		$sql = "SELECT user_id,full_name,type FROM users WHERE user_name='$username' AND password='$pass_hash'";
+		$sql = "SELECT user_id,full_name,type FROM ".USER_TABLE_NAME." WHERE user_name='$username' AND password='$pass_hash'";
 		
 		if( $result = $this->conn->query($sql) ) {
 			
@@ -103,7 +103,7 @@ class UserHandler extends DbHandler {
 		if( $this->username_exists($username) ){
 			$error = "Username already exists.";
 		} else {
-			$sql = "INSERT INTO users (user_name,full_name,password) VALUES ('$username','$fullname','$pass_hash')";
+			$sql = "INSERT INTO ".USER_TABLE_NAME." (user_name,full_name,password) VALUES ('$username','$fullname','$pass_hash')";
 			if( $this->conn->query($sql) )
 				$success=true;
 			else
@@ -123,7 +123,7 @@ class UserHandler extends DbHandler {
 
 		if( $user_id = $this->get_user_id($api_key) ) {
 
-			$sql = "UPDATE users SET $key=$value WHERE user_id = '$user_id'";
+			$sql = "UPDATE ".USER_TABLE_NAME." SET $key=$value WHERE user_id = '$user_id'";
 
 			if( $this->conn->query($sql) )
 				$success = true;

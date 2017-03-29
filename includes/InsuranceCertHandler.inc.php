@@ -12,7 +12,7 @@ class InsuranceCertHandler extends DbHandler {
 		$ok = false;
 		$message = "";
 		
-		$sql = "SELECT DATEDIFF(CURDATE(),InsuredUpto) as expiredDaysAgo FROM insurancedetails WHERE RegNo = '$RegNo'";
+		$sql = "SELECT DATEDIFF(CURDATE(),InsuredUpto) as expiredDaysAgo FROM ".INS_TABLE_NAME." WHERE RegNo = '$RegNo'";
 
 		if( $result = $this->conn->query($sql) ) {
 			
@@ -55,7 +55,7 @@ class InsuranceCertHandler extends DbHandler {
 		$success = false;
 		$error = "";
 
-		$sql = "SELECT * from insurancedetails WHERE RegNo = '$RegNo'";
+		$sql = "SELECT * from ".INS_TABLE_NAME." WHERE RegNo = '$RegNo'";
 
 		if( $result = $this->conn->query($sql) ) {
 
@@ -89,7 +89,7 @@ class InsuranceCertHandler extends DbHandler {
 		$success = false;
 		$error = "";
 
-		$sql="Insert into insurancedetails (RegNo, InsType, InsCompanyID,InsCheckerID, InsuredOn, InsuredUpto, Valuation, Coverage, InsuredToID, InsCost, LastInsID) values ('$RegNo','$InsType','$InsCompanyID','$InsCheckerID','$InsuredOn','$InsuredUpto','$Valuation','$Coverage','$InsuredToID',$InsCost,$LastInsID)";
+		$sql="Insert into ".INS_TABLE_NAME." (RegNo, InsType, InsCompanyID,InsCheckerID, InsuredOn, InsuredUpto, Valuation, Coverage, InsuredToID, InsCost, LastInsID) values ('$RegNo','$InsType','$InsCompanyID','$InsCheckerID','$InsuredOn','$InsuredUpto','$Valuation','$Coverage','$InsuredToID',$InsCost,$LastInsID)";
 
 		if ($result = $this->conn->query($sql)){
 			$success = true;

@@ -1,11 +1,11 @@
 <?php
 
-define("DB_HOST","mysql.hostinger.in");
-define("DB_USER","u396189307_root");
-define("DB_PASS","pass1221");
-define("DB_NAME","u396189307_qc");
+define("DB_HOST","localhost");
+define("DB_USER","root");
+define("DB_PASS","password");
+define("DB_NAME","qwikcheck");
 
-define("ROOT","http://qwikcheck.cf");
+define("ROOT","http://localhost");
 
 define("ENC_KEY","AKNVSVS");
 ?>

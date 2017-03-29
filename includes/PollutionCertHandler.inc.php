@@ -12,7 +12,7 @@ class PollutionCertHandler extends DbHandler {
 		$ok = false;
 		$message = "";
 		
-		$sql = "SELECT DATEDIFF(CURDATE(),ValidUpto) as expiredDaysAgo FROM pollutiondetails WHERE RegNo = '$RegNo'";
+		$sql = "SELECT DATEDIFF(CURDATE(),ValidUpto) as expiredDaysAgo FROM ".PUCC_TABLE_NAME." WHERE RegNo = '$RegNo'";
 
 		if( $result = $this->conn->query($sql) ) {
 			
@@ -55,7 +55,7 @@ class PollutionCertHandler extends DbHandler {
 		$success = false;
 		$error = "";
 		
-		$sql = "SELECT * from pollutiondetails where RegNo = '$RegNo'";
+		$sql = "SELECT * from ".PUCC_TABLE_NAME." where RegNo = '$RegNo'";
 		
 
 		if( $result = $this->conn->query($sql) ) {
@@ -91,7 +91,7 @@ class PollutionCertHandler extends DbHandler {
 		$success = false;
 		$error = "";
 
-		$sql="Insert into pollutiondetails (RegNo, EngineStroke, FuelType,CheckedOn, ValidUpto, CentreCode, pCheckerID, CostPUCC, LastPUCCNo) values ('$RegNo','$EngineStroke','$FuelType','$CheckedOn','$ValidUpto','$CentreCode','$pCheckerID',$CostPUCC,$LastPUCCNo);";
+		$sql="Insert into ".PUCC_TABLE_NAME." (RegNo, EngineStroke, FuelType,CheckedOn, ValidUpto, CentreCode, pCheckerID, CostPUCC, LastPUCCNo) values ('$RegNo','$EngineStroke','$FuelType','$CheckedOn','$ValidUpto','$CentreCode','$pCheckerID',$CostPUCC,$LastPUCCNo);";
 
 		if ($result = $this->conn->query($sql)){
 			$success = true;

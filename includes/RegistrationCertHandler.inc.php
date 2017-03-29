@@ -12,7 +12,7 @@ class RegistrationCertHandler extends DbHandler {
 		$ok = false;
 		$message = "";
 		
-		$sql = "SELECT DATEDIFF(CURDATE(),RegUpto) as expiredDaysAgo FROM vehicledetails WHERE RegNo = '$RegNo'";
+		$sql = "SELECT DATEDIFF(CURDATE(),RegUpto) as expiredDaysAgo FROM ".RC_TABLE_NAME." WHERE RegNo = '$RegNo'";
 
 		if( $result = $this->conn->query($sql) ) {
 			
@@ -55,7 +55,7 @@ class RegistrationCertHandler extends DbHandler {
 		$success = false;
 		$error = "";
 
-		$sql = "select * from vehicledetails where RegNo = '$RegNo'";
+		$sql = "select * from ".RC_TABLE_NAME." where RegNo = '$RegNo'";
 		
 		if( $result = $this->conn->query($sql) ) {
 
@@ -111,7 +111,7 @@ class RegistrationCertHandler extends DbHandler {
 		$success = false;
 		$error = "";
 
-		$sql="Insert into vehicledetails values ('$RegNo','$EngineNo','$ChassisNo','$Manufacturer','$Model','$YearOfManufacturing','$RegDate','$RegUpto','$FuelType',$FuelCapacity,$SeatingCapacity,'$VehicleCategory','$WeightCategory','$UsageCategory','$Color',$NoOfCyl,$CC,'$BodyType','$OwnerName','$OwnerID');";
+		$sql="Insert into ".RC_TABLE_NAME." values ('$RegNo','$EngineNo','$ChassisNo','$Manufacturer','$Model','$YearOfManufacturing','$RegDate','$RegUpto','$FuelType',$FuelCapacity,$SeatingCapacity,'$VehicleCategory','$WeightCategory','$UsageCategory','$Color',$NoOfCyl,$CC,'$BodyType','$OwnerName','$OwnerID');";
 
 		if ($result = $this->conn->query($sql)){
 			$success = true;
