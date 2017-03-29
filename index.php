@@ -3,6 +3,14 @@
 // Check if logged in
 if( isset($_POST['api_key'])) {
 
+	if( isset($_POST['challan_id']) ) {
+
+		include_once 'includes/ChallanHandler.inc.php';
+		$challanHandler = new ChallanHandler();
+		echo $challanHandler->get_challan_details($_POST['challan_id']);
+
+	}
+
 	if( isset($_POST['get']) ) {
 
 		if( $_POST['get'] == "my_vehicles" ) {

@@ -7,6 +7,7 @@ define("RC_TABLE_NAME"		,"vehicle_details"	);
 define("INS_TABLE_NAME"		,"insurance_details");
 define("PUCC_TABLE_NAME"	,"pollution_details");
 define("SESSION_TABLE_NAME"	,"session_api"		);
+define("CHALLAN_TABLE_NAME"	,"challan"			);
 
 class DbHandler {
 
