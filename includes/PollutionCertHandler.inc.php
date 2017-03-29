@@ -47,7 +47,7 @@ class PollutionCertHandler extends DbHandler {
 			$response['error']= $error;
 		}
 
-		return json_encode($response);
+		return json_encode($response,JSON_PRETTY_PRINT);
 	} 
 
 	function pucc_details($RegNo){

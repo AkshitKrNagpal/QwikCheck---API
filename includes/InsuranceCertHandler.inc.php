@@ -47,7 +47,7 @@ class InsuranceCertHandler extends DbHandler {
 			$response['error']= $error;
 		}
 
-		return json_encode($response);
+		return json_encode($response,JSON_PRETTY_PRINT);
 	} 
 
 	function ins_details($RegNo){
