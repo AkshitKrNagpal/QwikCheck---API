@@ -108,7 +108,7 @@ if( isset($_POST['api_key'])) {
 		$ins_details = trim((new InsuranceCertHandler())->check_status($_POST['vehicle_number']));
 		$poll_details = trim((new PollutionCertHandler())->check_status($_POST['vehicle_number']));
 
-		echo '{ "rc_details" : '.$rc_details.', "ins_details" : '.$ins_details.', "poll_details" : '.$poll_details.'}';
+		echo json_encode(json_decode('{ "rc_details" : '.$rc_details.', "ins_details" : '.$ins_details.', "poll_details" : '.$poll_details.'}'),JSON_PRETTY_PRINT);
 
 	} 
 
