@@ -4,6 +4,6 @@ include_once 'includes/DbHandler.inc.php';
 
 $DbHandler= new DbHandler();
 
-echo "Akshit";
+echo getenv("MYSQLCONNSTR_localdb");
 
 ?>
