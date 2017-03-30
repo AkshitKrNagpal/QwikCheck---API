@@ -37,6 +37,40 @@ class ChallanHandler extends DbHandler {
 		return json_encode($response, JSON_PRETTY_PRINT);
 	}
 
+	function get_all_challan( $user_id , $type ) {
+		$success = false;
+		$error = "";
+		if($type == "police") {
+			$sql = "select * from ".CHALLAN_TABLE_NAME." where issuing_officer_id = '$user_id' ORDER BY challan_id DESC";
+		} else {
+			$sql = "select * from ".CHALLAN_TABLE_NAME." where user_id = '$user_id' ORDER BY challan_id DESC";
+		}
+		//echo $sql;
+		
+		if( $result = $this->conn->query($sql) ) {
+
+			if($result->num_rows > 0) {
+
+				$success = true;
+				$details =  $result->fetch_array();
+
+			} else {
+				$error = "No Challans found.";
+			}
+
+		} else {
+			$error = "Sql query is incorrect";
+		}
+
+		if( $response['success'] = $success ) {
+			$response['details'] = $details;
+		} else {
+			$response['error'] = $error; 
+		}
+
+		return json_encode($response, JSON_PRETTY_PRINT);
+	}
+
 	function create_challan(
 		$registration_number,
 		$description,
@@ -59,6 +93,8 @@ class ChallanHandler extends DbHandler {
 
 		if( !$response['success'] = $success ) {
 			$response['error']=$error;
+		} else {
+
 		}
 		return json_encode($response,JSON_PRETTY_PRINT);
 
