@@ -118,7 +118,7 @@ if( isset($_POST['api_key'])) {
 			include_once 'includes/ChallanHandler.inc.php';
 			$challanHandler = new ChallanHandler();
 
-			echo $challanHandler->create_challan($_POST['vehicle_number'],$_POST['description'],$_POST['api_key'], $_POST['payment_amount'])
+			echo $challanHandler->create_challan($_POST['vehicle_number'],$_POST['description'],$_POST['api_key'], $_POST['payment_amount']);
 
 		} else {
 
