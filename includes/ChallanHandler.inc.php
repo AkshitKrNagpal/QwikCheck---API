@@ -58,7 +58,13 @@ class ChallanHandler extends DbHandler {
 			if($result->num_rows > 0) {
 
 				$success = true;
-				$details =  $result->fetch_array();
+
+				$details = array();
+
+				while($row = $result->fetch_assoc() ) {
+					array_push($details,$row);
+				}
+
 
 			} else {
 				$error = "No Challans found.";
