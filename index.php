@@ -18,6 +18,12 @@ if( isset($_POST['api_key'])) {
 
 	if( isset($_POST['get']) ) {
 
+		if( $_POST['get'] == "my_challans") {
+			include_once 'includes/ChallanHandler.inc.php';
+			$challanHandler = new ChallanHandler();
+			echo $challanHandler->get_all_challan($_POST['api_key']);
+		}
+
 		if( $_POST['get'] == "my_vehicles" ) {
 
 			include_once 'includes/UserHandler.inc.php';

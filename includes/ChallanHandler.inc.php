@@ -37,9 +37,15 @@ class ChallanHandler extends DbHandler {
 		return json_encode($response, JSON_PRETTY_PRINT);
 	}
 
-	function get_all_challan( $user_id , $type ) {
+	function get_all_challan( $api_key , $type ) {
+		
 		$success = false;
 		$error = "";
+
+		include_once 'includes/UserHandler.inc.php';
+		$userHandler = new UserHandler();
+		$user_id = $userHandler->get_user_id($api_key);
+		
 		if($type == "police") {
 			$sql = "select * from ".CHALLAN_TABLE_NAME." where issuing_officer_id = '$user_id' ORDER BY challan_id DESC";
 		} else {
