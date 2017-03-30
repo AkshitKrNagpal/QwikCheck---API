@@ -50,8 +50,8 @@ class ChallanHandler extends DbHandler {
 		include_once 'includes/UserHandler.inc.php';
 		$userHandler = new UserHandler();
 		$userId = $userHandler->get_user_id($api_key);
-		
-		$sql = "INSERT INTO ".CHALLAN_TABLE_NAME." (registration_number, challan_description, issuing_officer_id , issue_time, payment_amount) VALUES ('$registration_number', '$description', '$userId', NOW(),$payment_amount)";
+
+		$sql = "INSERT INTO ".CHALLAN_TABLE_NAME." (registration_number, challan_description, issuing_officer_id , issue_time, payment_amount) VALUES ('$registration_number', '$description', '$userId', NOW(),'$payment_amount')";
 		if( $this->conn->query($sql) )
 			$success=true;
 		else
