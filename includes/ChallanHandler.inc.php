@@ -51,7 +51,7 @@ class ChallanHandler extends DbHandler {
 		} else {
 			$sql = "select * from ".CHALLAN_TABLE_NAME." where user_id = '$user_id' ORDER BY challan_id DESC";
 		}
-		echo $sql;
+		//echo $sql;
 		
 		if( $result = $this->conn->query($sql) ) {
 
