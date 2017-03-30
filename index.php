@@ -7,7 +7,12 @@ if( isset($_POST['api_key'])) {
 
 		include_once 'includes/ChallanHandler.inc.php';
 		$challanHandler = new ChallanHandler();
-		echo $challanHandler->get_challan_details($_POST['challan_id']);
+			
+		if( isset($_POST['payment_method']) ) {
+			echo $challanHandler->update_pay_status($_POST['challan_id'],$_POST['payment_method']);
+		} else {
+			echo $challanHandler->get_challan_details($_POST['challan_id']);
+		}
 
 	}
 
@@ -108,16 +113,26 @@ if( isset($_POST['api_key'])) {
 
 	} else if( isset($_POST['vehicle_number']) ) {
 
-		include_once 'includes/RegistrationCertHandler.inc.php';
-		include_once 'includes/InsuranceCertHandler.inc.php';
-		include_once 'includes/PollutionCertHandler.inc.php';
+		if( isset($_POST['description']) && isset($_POST['payment_amount']) ) {
+
+			include_once 'includes/ChallanHandler.inc.php';
+			$challanHandler = new ChallanHandler();
+
+			echo $challanHandler->create_challan($_POST['vehicle_number'],$_POST['description'],$_POST['api_key'], $_POST['payment_amount'])
+
+		} else {
+
+			include_once 'includes/RegistrationCertHandler.inc.php';
+			include_once 'includes/InsuranceCertHandler.inc.php';
+			include_once 'includes/PollutionCertHandler.inc.php';
 		
-		$rc_details = trim((new RegistrationCertHandler())->check_status($_POST['vehicle_number']));
-		$ins_details = trim((new InsuranceCertHandler())->check_status($_POST['vehicle_number']));
-		$poll_details = trim((new PollutionCertHandler())->check_status($_POST['vehicle_number']));
+			$rc_details = trim((new RegistrationCertHandler())->check_status($_POST['vehicle_number']));
+			$ins_details = trim((new InsuranceCertHandler())->check_status($_POST['vehicle_number']));
+			$poll_details = trim((new PollutionCertHandler())->check_status($_POST['vehicle_number']));
 
-		echo json_encode(json_decode('{ "rc_details" : '.$rc_details.', "ins_details" : '.$ins_details.', "poll_details" : '.$poll_details.'}'),JSON_PRETTY_PRINT);
+			echo json_encode(json_decode('{ "rc_details" : '.$rc_details.', "ins_details" : '.$ins_details.', "poll_details" : '.$poll_details.'}'),JSON_PRETTY_PRINT);
 
+		}
 	} 
 
 } else {

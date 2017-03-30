@@ -86,7 +86,17 @@ class PollutionCertHandler extends DbHandler {
 	}
 
 
-	function register_pucc($RegNo, $EngineStroke, $FuelType,$CheckedOn, $ValidUpto, $CentreCode, $pCheckerID, $CostPUCC, $LastPUCCNo) {
+	function register_pucc(
+		$RegNo,
+		$EngineStroke,
+		$FuelType,
+		$CheckedOn,
+		$ValidUpto,
+		$CentreCode,
+		$pCheckerID,
+		$CostPUCC,
+		$LastPUCCNo
+		) {
 
 		$success = false;
 		$error = "";
