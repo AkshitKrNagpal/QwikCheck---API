@@ -49,7 +49,7 @@ class ChallanHandler extends DbHandler {
 		if($type == "police") {
 			$sql = "select * from ".CHALLAN_TABLE_NAME." where issuing_officer_id = '$user_id' ORDER BY challan_id DESC";
 		} else {
-			$sql = "select * from ".CHALLAN_TABLE_NAME." where user_id = '$user_id' ORDER BY challan_id DESC";
+			$sql = "select C.* from ".CHALLAN_TABLE_NAME." C,".RC_TABLE_NAME." R where R.RegNo = C.registration_number AND R.OwnerID = '$user_id' ORDER BY challan_id DESC";
 		}
 		//echo $sql;
 		
@@ -57,7 +57,6 @@ class ChallanHandler extends DbHandler {
 
 			$success = true;
 			$details = array();
-	
 			while($row = $result->fetch_assoc() ) {
 				array_push($details,$row);
 			}
