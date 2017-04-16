@@ -62,7 +62,7 @@ class UserHandler extends DbHandler {
 
 		$pass_hash = Hasher::encrypt($password);
 
-		$sql = "SELECT user_id,full_name,type FROM ".USER_TABLE_NAME." WHERE user_name='$username' AND password='$pass_hash'";
+		$sql = "SELECT * FROM ".USER_TABLE_NAME." WHERE user_name='$username' AND password='$pass_hash'";
 		
 		if( $result = $this->conn->query($sql) ) {
 			
