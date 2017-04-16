@@ -146,7 +146,9 @@ class UserHandler extends DbHandler {
 
 		if( $user_id = $this->get_user_id($api_key) ) {
 
-			$sql = "SELECT RegNo FROM vehicledetails WHERE OwnerID = '$user_id'";
+			$sql = "SELECT RegNo FROM ".RC_TABLE_NAME." WHERE OwnerID = '$user_id'";
+
+			echo $sql;
 
 			if( $result = $this->conn->query($sql) ) {
 				
