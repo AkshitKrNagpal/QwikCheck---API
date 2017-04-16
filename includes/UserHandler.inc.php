@@ -148,8 +148,6 @@ class UserHandler extends DbHandler {
 
 			$sql = "SELECT RegNo FROM ".RC_TABLE_NAME." WHERE OwnerID = '$user_id'";
 
-			echo $sql;
-
 			if( $result = $this->conn->query($sql) ) {
 				
 				$success = true;
