@@ -55,19 +55,11 @@ class ChallanHandler extends DbHandler {
 		
 		if( $result = $this->conn->query($sql) ) {
 
-			if($result->num_rows > 0) {
-
-				$success = true;
-
-				$details = array();
-
-				while($row = $result->fetch_assoc() ) {
-					array_push($details,$row);
-				}
-
-
-			} else {
-				$error = "No Challans found.";
+			$success = true;
+			$details = array();
+	
+			while($row = $result->fetch_assoc() ) {
+				array_push($details,$row);
 			}
 
 		} else {
@@ -75,6 +67,7 @@ class ChallanHandler extends DbHandler {
 		}
 
 		if( $response['success'] = $success ) {
+			$response['count'] = sizeof($details);
 			$response['details'] = $details;
 		} else {
 			$response['error'] = $error; 
